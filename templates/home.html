@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domovská stránka</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script defer src="{{ url_for('static', filename='scripts/nav.js') }}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="sidenav" id="mySidenav">
+        <a href="javascript:void(0)" class="menu-btn" onclick="toggleNav()">&#9776;</a>
+        <a href="{{ url_for('home') }}" class="nav-link"><i class="fas fa-house-user"></i> <span class="nav-text">Home</span></a>
+        <a href="{{ url_for('activator_inhibitor') }}" class="nav-link"><i class="fas fa-braille"></i> <span class="nav-text">Activator-Inhibitor</span></a>
+        <a href="#" class="nav-link"><i class="fas fa-water"></i> <span class="nav-text">Oscilační vlny</span></a>
+        <a href="#" class="nav-link"><i class="fas fa-grip-lines"></i> <span class="nav-text">Zebří pruhy</span></a>
+    </div>
+
+    <div id="main">
+        <h1>Vítejte v Generátoru Textur</h1>
+        <p>Vyberte model vlevo a začněte generovat textury.</p>
+    </div>
+
+    <script defer src="{{ url_for('static', filename='scripts/nav.js') }}"></script>
+</body>
+</html>

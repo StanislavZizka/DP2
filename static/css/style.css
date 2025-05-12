@@ -1,0 +1,275 @@
+body {
+    font-family: "Lato", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+.sidenav {
+    height: 100%;
+    width: 60px; /* Původní šířka pro zobrazení pouze ikon */
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 20px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: flex;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.sidenav a i {
+    color: white;
+    font-size: 24px;
+}
+
+.sidenav a .nav-text {
+    margin-left: 10px;
+    color: white;
+    display: none; /* Skryté při zobrazení pouze ikon */
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.menu-btn {
+    font-size: 30px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+#main {
+    transition: margin-left 0.5s;
+    padding: 16px;
+    margin-left: 60px; /* Odsazení pro menší šířku navigace */
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+form div {
+    margin-bottom: 15px; /* Odsazení mezi jednotlivými bloky */
+}
+
+label {
+    display: block; /* Zajistí, že label je na samostatném řádku */
+    margin-bottom: 5px;
+}
+
+input {
+    display: block; /* Tlačítko bude zobrazeno na samostatném řádku */
+    background-color: white;
+    color: #333;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 2px solid #bdbdbd;
+    border-radius: 4px;
+    min-width: 187px;
+    max-width: 187px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box; /* Zajistí, že padding se počítá do šířky elementu */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Plynulý přechod při interakci */
+}
+
+input:focus {
+    border-color: #005a9c; /* */
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 90, 156, 0.5);
+}
+
+input:disabled{
+    background-color: #f2f2f2;
+    color: #999;
+    border-color: #e0e0e0;
+}
+
+button {
+    background-color:#005a9c;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    letter-spacing: 1px;
+  }
+
+  button:hover {
+    background-color: #004080; /* Tmavší modrá při hoveru */
+    transform: translateY(-1px); /* Mírné vysunutí nahoru při hoveru */
+}
+
+button:active {
+    background-color: #003366; /* Ještě tmavší modrá při kliknutí */
+    transform: translateY(0); /* Resetuje vysunutí při kliknutí */
+}
+
+/* Levý grid (pro Aktivátor-Inhibitor) */
+.left-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* Tři sloupce: vstupy, legenda, obrázek */
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+/* Kontejner pro legendu */
+.legend-container {
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow-x: auto; /* Zajištění správného zobrazení na malých obrazovkách */
+}
+
+/* Styl tabulky */
+.legend-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.legend-container th, .legend-container td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+.legend-container th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+/* Vstupy (formulář) */
+.form-container {
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Obrázky */
+.image-container {
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center; /* Zarovnání textu a tlačítka */
+}
+
+.image-container img {
+    max-width: 50%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.image-wrapper {
+    display: flex;
+    justify-content: center; /* Centrovaný obrázek */
+    align-items: center;
+    width: 100%;
+    margin: 10px 0; /* Mezera nad a pod obrázkem */
+}
+
+/* Responsivita pro menší obrazovky */
+@media (max-width: 768px) {
+    .left-grid, .right-grid {
+        grid-template-columns: 1fr; /* Jeden sloupec na malých zařízeních */
+    }
+}
+
+/* Tlačítko pro stažení */
+.download-btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #0088cc;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.download-btn:hover {
+    background-color: #005f99;
+}
+
+
+
+@keyframes waveAnimation {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+}
+
+#loading {
+    display: none;
+    font-size: 20px;
+    font-weight: bold;
+    color: #005a9c;
+    text-align: center;
+    animation: waveAnimation 1s infinite ease-in-out;
+    margin-top: 10px;
+}
+
+/* Thumbnail obrázek */
+#generatedImage {
+    width: 200px; /* Přizpůsob si velikost */
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#generatedImage:hover {
+    opacity: 0.8;
+}
+
+.popup {
+    display: none; /* Skryje pop-up při načtení stránky */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.popup-content {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 8px;
+}
+
+.popup-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 40px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
