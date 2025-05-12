@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aktivátor-Inhibitor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+       <!-- <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
+    <script defer src="{{ url_for('static', filename='scripts/nav.js') }}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script defer src="{{ url_for('static', filename='scripts/zoom_picture.js') }}"></script>
+</head>
+<body>
+    <div class="sidenav" id="mySidenav">
+        <a href="javascript:void(0)" class="menu-btn" onclick="toggleNav()">&#9776;</a>
+        <a href="{{ url_for('home') }}" class="nav-link"><i class="fas fa-house-user"></i> <span class="nav-text">Home</span></a>
+        <a href="{{ url_for('activator_inhibitor') }}" class="nav-link"><i class="fas fa-braille"></i> <span class="nav-text">Activator-Inhibitor</span></a>
+        <a href="#" class="nav-link"><i class="fas fa-water"></i> <span class="nav-text">Oscilační vlny</span></a>
+        <a href="#" class="nav-link"><i class="fas fa-grip-lines"></i> <span class="nav-text">Zebří pruhy</span></a>
+    </div>
+    
+    
+
+    <div id="main">
+        <h1>Aktivátor-Inhibitor Model</h1>
+        <p>Zadejte parametry pro generování vzoru.</p>
+
+        <div class="left-grid">
+            <div class="form-container">
+                <form id="activatorForm">
+                    <div>
+                        <label for="K">Konstanta K:</label>
+                        <input type="number" id="K" name="K" step="0.01" value="1.0" required min="0.1">
+                    </div>
+                    <div>
+                        <label for="t_max">Maximální čas (t_max):</label>
+                        <input type="number" id="t_max" name="t_max" step="0.1" value="10.0" required min="0.1">
+                    </div>
+                    <div>
+                        <label for="delta_t">Časový krok (delta_t):</label>
+                        <input type="number" id="delta_t" name="delta_t" step="0.01" value="0.1" required min="0.01">
+                    </div>
+                    <div>
+                        <label for="color1">Barva 1:</label>
+                        <input type="color" id="color1" name="color1" value="#0000ff">
+                    </div>
+                    <div>
+                        <label for="color2">Barva 2:</label>
+                        <input type="color" id="color2" name="color2" value="#ff0000">
+                    </div>
+                    <button type="submit">Generovat</button>
+                </form>
+                <p id="loading" style="display:none;">Generuji obrázek...</p>
+            </div>
+
+        <!-- Výstupní obrázek -->
+        <div class="image-container">
+            <h3>Výstupní Obrázek</h3>
+            <div class="image-wrapper">
+                <img id="generatedImage" src="#" alt="Generovaný výstup" style="display:none; cursor:pointer;" onclick="openPopup(this)">
+            </div>
+            <a id="downloadBtn" href="#" class="download-btn" download style="display:none;">Stáhnout Obrázek</a>
+        </div>
+
+
+            <div id="popupContainer" class="popup" onclick="closePopup(event)">
+                <span class="popup-close" onclick="closePopup(event)">&times;</span>
+                <img class="popup-content" id="popupImage">
+            </div>
+
+
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("activatorForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            const K = parseFloat(document.getElementById("K").value);
+            const t_max = parseFloat(document.getElementById("t_max").value);
+            const delta_t = parseFloat(document.getElementById("delta_t").value);
+            const color1 = document.getElementById("color1").value;
+            const color2 = document.getElementById("color2").value;
+            
+            if (isNaN(K) || isNaN(t_max) || isNaN(delta_t) || K <= 0 || t_max <= 0 || delta_t <= 0) {
+                alert("Zadejte platné hodnoty pro K, t_max a delta_t.");
+                return;
+            }
+            
+            document.getElementById("loading").style.display = "block";
+            
+            fetch("/calculate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ K, t_max, delta_t, color1, color2 })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("loading").style.display = "none";
+                
+                if (data.image_url) {
+                    console.log("Obrázek byl vygenerován na URL:", data.image_url);
+                    
+                    const img = document.getElementById("generatedImage");
+                    img.src = data.image_url + "?t=" + new Date().getTime();  // Oprava keše obrázku
+                    img.style.display = "block";
+
+                    const downloadBtn = document.getElementById("downloadBtn");
+                    downloadBtn.href = data.image_url;
+                    downloadBtn.download = `activator_inhibitor_K${K}_t${t_max}.png`;
+                    downloadBtn.style.display = "inline-block";
+                } else {
+                    console.error("Obrázek se negeneroval správně:", data);
+                    alert("Chyba při generování obrázku!");
+                }
+            })
+            .catch(error => {
+                document.getElementById("loading").style.display = "none";
+                console.error("Chyba při komunikaci s backendem:", error);
+            });
+        });
+
+    </script>
+</body>
+</html>
