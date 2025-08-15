@@ -106,6 +106,11 @@ class ThemeManager {
                 this.applyTheme(systemTheme);
             }
         });
+
+        // Listen for language changes
+        document.addEventListener('languageChanged', () => {
+            this.updateToggleButton();
+        });
     }
 }
 

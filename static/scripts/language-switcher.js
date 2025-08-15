@@ -188,6 +188,25 @@ class LanguageSwitcher {
         this.createLanguageSwitcher();
         this.applyLanguage(this.currentLanguage);
         this.setupEventListeners();
+        
+        // Update theme toggle on page load if it exists
+        // Try multiple times in case theme manager loads later
+        const updateThemeToggle = () => {
+            if (window.themeManager && window.themeManager.updateToggleButton) {
+                window.themeManager.updateToggleButton();
+                return true;
+            }
+            return false;
+        };
+        
+        // Try immediately and then with delays
+        if (!updateThemeToggle()) {
+            setTimeout(() => {
+                if (!updateThemeToggle()) {
+                    setTimeout(updateThemeToggle, 200);
+                }
+            }, 100);
+        }
     }
 
     createLanguageSwitcher() {
@@ -244,6 +263,11 @@ class LanguageSwitcher {
             if (window.themeManager && window.themeManager.updateToggleButton) {
                 window.themeManager.updateToggleButton();
             }
+            
+            // Trigger custom event for other components to listen
+            document.dispatchEvent(new CustomEvent('languageChanged', { 
+                detail: { language: language } 
+            }));
             
             this.showToast(this.getTranslation('language-switched', language));
         }
