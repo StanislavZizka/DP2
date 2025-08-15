@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, url_for
+from flask import Flask, render_template, request, jsonify, url_for, send_from_directory
 import os
 from models.activator_inhibitor import generate_texture
 
@@ -13,6 +13,11 @@ def home():
 @app.route('/activator_inhibitor')
 def activator_inhibitor():
     return render_template('activator_inhibitor.html')
+
+
+@app.route('/assets/<path:filename>')
+def assets(filename):
+    return send_from_directory('assets', filename)
 
 
 @app.route('/calculate', methods=['POST'])
