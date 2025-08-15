@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, jsonify, url_for, send_from_directory
 import os
+import matplotlib
+matplotlib.use('Agg')  # Use non-GUI backend for serverless
 from models.activator_inhibitor import generate_texture
 
 app = Flask(__name__)
@@ -50,6 +52,10 @@ def calculate():
         print(f"CHYBA: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
+
+# Vercel needs this for serverless deployment
+# Export the app object for Vercel
+application = app
 
 if __name__ == '__main__':
     app.run(debug=True)
