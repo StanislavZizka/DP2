@@ -1,3 +1,7 @@
+/* Import CSS components */
+@import url('components/forms.css');
+@import url('components/toast.css');
+
 :root {
   /* Design System Colors */
   --primary-50: #f0f9ff;

@@ -1,61 +1,66 @@
-from flask import Flask, render_template, request, jsonify, url_for, send_from_directory
+"""
+Mathematical Texture Generator Flask Application
+
+A clean, organized Flask application for generating mathematical textures
+using reaction-diffusion models with an intuitive web interface.
+"""
 import os
 import matplotlib
-matplotlib.use('Agg')  # Use non-GUI backend for serverless
-from models.activator_inhibitor import generate_texture
+matplotlib.use('Agg')  # Use non-GUI backend for serverless deployment
 
-app = Flask(__name__)
+from flask import Flask
+from config import config
+from routes.pages import pages
+from routes.api import api
 
-
-@app.route('/')
-def home():
-    return render_template('home.html')
-
-
-@app.route('/activator_inhibitor')
-def activator_inhibitor():
-    return render_template('activator_inhibitor.html')
-
-
-@app.route('/assets/<path:filename>')
-def assets(filename):
-    return send_from_directory('assets', filename)
-
-
-@app.route('/calculate', methods=['POST'])
-def calculate():
-    try:
-        data = request.get_json()
-        
-        # DEBUG: Výpis hodnot přijatých z frontendové části
-        print("Přijatá data:", data)
-
-        # Validace vstupů
-        K = float(data.get('K', 1.0))
-        t_max = float(data.get('t_max', 10.0))
-        delta_t = float(data.get('delta_t', 0.1))
-        color1 = data.get('color1', "#0000ff")
-        color2 = data.get('color2', "#ff0000")
-
-        print(f"DEBUG: Zpracované hodnoty -> K={K}, t_max={t_max}, delta_t={delta_t}")
-
-        # Generování textury
-        image_path = generate_texture(K, t_max, delta_t, color1, color2)
-        print(f"DEBUG: Obrázek úspěšně vygenerován -> {image_path}")
-
-        image_url = url_for('static', filename='images/activator_inhibitor_texture.png', _external=True)
-
-
-        return jsonify({'image_url': image_url})
+def create_app(config_name=None):
+    """
+    Flask application factory pattern.
     
-    except Exception as e:
-        print(f"CHYBA: {str(e)}")
-        return jsonify({'error': str(e)}), 500
+    Args:
+        config_name: Configuration environment ('development', 'production', 'testing')
+        
+    Returns:
+        Flask: Configured Flask application instance
+    """
+    # Determine configuration
+    if config_name is None:
+        config_name = os.environ.get('FLASK_CONFIG', 'default')
+    
+    # Create Flask app
+    app = Flask(__name__)
+    app.config.from_object(config[config_name])
+    
+    # Register blueprints
+    app.register_blueprint(pages)
+    app.register_blueprint(api)
+    
+    # Add error handlers
+    register_error_handlers(app)
+    
+    return app
 
+def register_error_handlers(app):
+    """Register custom error handlers for the application."""
+    
+    @app.errorhandler(404)
+    def not_found_error(error):
+        return {'error': 'Page not found'}, 404
+    
+    @app.errorhandler(500)
+    def internal_error(error):
+        return {'error': 'Internal server error'}, 500
+    
+    @app.errorhandler(400)
+    def bad_request_error(error):
+        return {'error': 'Bad request'}, 400
 
-# Vercel needs this for serverless deployment
-# Export the app object for Vercel
+# Create app instance
+app = create_app()
+
+# For Vercel serverless deployment
 application = app
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Development server
+    app.run(debug=True, host='0.0.0.0', port=5000)
