@@ -19,11 +19,11 @@
         <button class="menu-btn" onclick="toggleNav()" aria-label="Toggle navigation">
             <i class="fas fa-bars"></i>
         </button>
-        <a href="{{ url_for('home') }}" class="nav-link" aria-label="Domovská stránka">
+        <a href="{{ url_for('pages.home') }}" class="nav-link" aria-label="Domovská stránka">
             <i class="fas fa-home"></i>
             <span class="nav-text" data-i18n="nav-home">Domov</span>
         </a>
-        <a href="{{ url_for('activator_inhibitor') }}" class="nav-link" aria-label="Aktivátor-Inhibitor model">
+        <a href="{{ url_for('pages.activator_inhibitor') }}" class="nav-link" aria-label="Aktivátor-Inhibitor model">
             <i class="fas fa-project-diagram"></i>
             <span class="nav-text" data-i18n="nav-activator-inhibitor">Aktivátor-Inhibitor</span>
         </a>
@@ -49,7 +49,7 @@
                     </div>
                     <h3 data-i18n="feature-1-title">Reakčně-difuzní modely</h3>
                     <p data-i18n="feature-1-desc">Generujte komplexní vzory pomocí aktivátor-inhibitor modelů</p>
-                    <a href="{{ url_for('activator_inhibitor') }}" class="btn"><span data-i18n="get-started">Začít vytvářet</span> <i class="fas fa-arrow-right"></i></a>
+                    <a href="{{ url_for('pages.activator_inhibitor') }}" class="btn"><span data-i18n="get-started">Začít vytvářet</span> <i class="fas fa-arrow-right"></i></a>
                 </div>
                 
                 <div class="feature-card card">
