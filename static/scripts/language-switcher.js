@@ -296,6 +296,13 @@ class LanguageSwitcher {
 
         // Update document language attribute
         document.documentElement.setAttribute('lang', language);
+        
+        // Force update theme toggle immediately after language change
+        setTimeout(() => {
+            if (window.themeManager && window.themeManager.updateToggleButton) {
+                window.themeManager.updateToggleButton();
+            }
+        }, 10);
     }
 
     getTranslation(key, language = null) {

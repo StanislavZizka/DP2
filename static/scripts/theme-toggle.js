@@ -9,6 +9,11 @@ class ThemeManager {
         this.applyTheme(this.currentTheme);
         this.createToggleButton();
         this.bindEvents();
+        
+        // Update button after language switcher might be loaded
+        setTimeout(() => {
+            this.updateToggleButton();
+        }, 150);
     }
 
     getStoredTheme() {
@@ -63,13 +68,23 @@ class ThemeManager {
         
         // Get translations if language switcher is available
         const t = window.languageSwitcher ? window.languageSwitcher.t.bind(window.languageSwitcher) : (key) => {
+            // Check stored language preference or use English as fallback
+            const storedLang = localStorage.getItem('selectedLanguage') || 'cs';
             const fallbacks = {
-                'theme-dark': 'Tmavý',
-                'theme-light': 'Světlý',
-                'switch-to-light': 'Přepnout na světlý režim',
-                'switch-to-dark': 'Přepnout na tmavý režim'
+                cs: {
+                    'theme-dark': 'Tmavý',
+                    'theme-light': 'Světlý',
+                    'switch-to-light': 'Přepnout na světlý režim',
+                    'switch-to-dark': 'Přepnout na tmavý režim'
+                },
+                en: {
+                    'theme-dark': 'Dark',
+                    'theme-light': 'Light',
+                    'switch-to-light': 'Switch to light mode',
+                    'switch-to-dark': 'Switch to dark mode'
+                }
             };
-            return fallbacks[key] || key;
+            return fallbacks[storedLang] && fallbacks[storedLang][key] ? fallbacks[storedLang][key] : key;
         };
         
         if (this.currentTheme === 'dark') {
